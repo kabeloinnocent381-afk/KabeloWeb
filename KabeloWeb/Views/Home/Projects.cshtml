@@ -1,0 +1,28 @@
+﻿@model List<KabeloWeb.Models.GitHubRepo>
+@{
+    ViewData["Title"] = "Projects";
+}
+<h1>Projects</h1>
+
+@if (Model == null || !Model.Any())
+{
+    <div class="card-custom mt-3">
+        <p>No public projects found yet.</p>
+    </div>
+}
+else
+{
+    <div class="row g-3 mt-2">
+        @foreach (var r in Model)
+        {
+            <div class="col-md-4">
+                <div class="card-custom h-100">
+                    <h3>@r.Name</h3>
+                    <p>@(string.IsNullOrWhiteSpace(r.Description) ? "No description provided." : r.Description)</p>
+                    <p><small>Language: @r.Language • ⭐ @r.StargazersCount</small></p>
+                    <a class="btn btn-custom" href="@r.HtmlUrl" target="_blank">View on GitHub</a>
+                </div>
+            </div>
+        }
+    </div>
+}
