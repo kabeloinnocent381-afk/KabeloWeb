@@ -7,16 +7,17 @@ EXPOSE 8080
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-COPY . .
+COPY KabeloWeb/ ./KabeloWeb/
+WORKDIR /src/KabeloWeb
 
-RUN dotnet restore "./KabeloWeb.csproj"
-RUN dotnet publish "./KabeloWeb.csproj" -c Release -o /app/publish
+RUN dotnet restore "KabeloWeb.csproj"
+RUN dotnet publish "KabeloWeb.csproj" -c Release -o /app/publish
 
 # Run stage
 FROM base AS final
 WORKDIR /app
 COPY --from=build /app/publish .
 
-ENV ASPNETCORE_URLS=http://+:8080
+ENV ASPNETCORE_URLS=http://+:$PORT
 
 ENTRYPOINT ["dotnet", "KabeloWeb.dll"]
